@@ -79,6 +79,35 @@ namespace ReviewerFinal.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Number of Games Played")]
+        public int NumberOfGamesPlayed { get; set; }
+
+        [Display(Name = "Gamer Level")]
+        public PlayerLevel CurrentPlayerLevel { get; set; }
+    }
+
+    public class EditUserViewModel
+    {
+        public EditUserViewModel() { }
+
+        public EditUserViewModel(ApplicationUser user)
+        {
+            Email = user.Email;
+            NumberOfGamesPlayed = user.NumberOfGamesPlayed;
+            CurrentPlayerLevel = user.CurrentPlayerLevel;
+        }
+
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Display(Name = "Number of Games Played")]
+        public int NumberOfGamesPlayed { get; set; }
+
+        [Display(Name = "Gamer Level")]
+        public PlayerLevel CurrentPlayerLevel { get; set; }
     }
 
     public class ResetPasswordViewModel

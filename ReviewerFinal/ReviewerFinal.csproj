@@ -210,6 +210,10 @@
     <Compile Include="Migrations\201604071707577_AddReviews.Designer.cs">
       <DependentUpon>201604071707577_AddReviews.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604071737517_AddReviews2.cs" />
+    <Compile Include="Migrations\201604071737517_AddReviews2.Designer.cs">
+      <DependentUpon>201604071737517_AddReviews2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Game.cs" />
@@ -217,6 +221,7 @@
     <Compile Include="Models\GameSystem.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\PlayerLevel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -285,6 +290,7 @@
     <Content Include="Views\Games\Details.cshtml" />
     <Content Include="Views\Games\Edit.cshtml" />
     <Content Include="Views\Games\Index.cshtml" />
+    <Content Include="Views\Home\Admin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -303,6 +309,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604071707577_AddReviews.resx">
       <DependentUpon>201604071707577_AddReviews.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604071737517_AddReviews2.resx">
+      <DependentUpon>201604071737517_AddReviews2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -38,6 +38,6 @@ namespace ReviewerFinal.Models
             return new ApplicationDbContext();
         }
 
-        public System.Data.Entity.DbSet<ReviewerFinal.Models.EditUserViewModel> EditUserViewModels { get; set; }
+        //public System.Data.Entity.DbSet<ReviewerFinal.Models.EditUserViewModel> EditUserViewModels { get; set; }
     }
 }

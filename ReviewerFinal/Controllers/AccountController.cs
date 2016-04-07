@@ -10,6 +10,9 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ReviewerFinal.Models;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Data.Entity;
 
 namespace ReviewerFinal.Controllers
 {
@@ -69,6 +72,7 @@ namespace ReviewerFinal.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         public ActionResult Details(string Email = null)
         {
             var db = new ApplicationDbContext();
@@ -81,6 +85,72 @@ namespace ReviewerFinal.Controllers
             }
 
             return View(model);
+        }
+
+        public ActionResult Edit(string Email = null)
+        {
+            if (Email == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            }
+
+            var db = new ApplicationDbContext();
+            var user = db.Users.First(x => x.Email == Email);
+            var model = new EditUserViewModel(user);
+
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id, Email, NumberOfGamesPlayed, CurrentPlayerLevel")] EditUserViewModel userModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var db = new ApplicationDbContext();
+                var user = db.Users.First(x => x.Email == userModel.Email);
+
+                user.Email = userModel.Email;
+                user.NumberOfGamesPlayed = userModel.NumberOfGamesPlayed;
+                user.CurrentPlayerLevel = userModel.CurrentPlayerLevel;
+
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(userModel);
+        }
+
+        public ActionResult Delete(string Email = null)
+        {
+            var db = new ApplicationDbContext();
+            var user = db.Users.First(x => x.Email == Email);
+            var model = new EditUserViewModel(user);
+
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(model);
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(string Email)
+        {
+            var db = new ApplicationDbContext();
+            var user = db.Users.First(x => x.Email == Email);
+            db.Users.Remove(user);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         //
@@ -182,7 +252,8 @@ namespace ReviewerFinal.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email,
+                    NumberOfGamesPlayed = model.NumberOfGamesPlayed, CurrentPlayerLevel = model.CurrentPlayerLevel };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

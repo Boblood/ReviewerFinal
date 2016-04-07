@@ -8,8 +8,8 @@ namespace ReviewerFinal.Models
 {
     public enum PlayerLevel
     {
-        Casual,
         Family,
+        Casual,
         Pro,
         Underground
     }

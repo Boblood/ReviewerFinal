@@ -93,13 +93,17 @@ namespace ReviewerFinal.Models
 
         public EditUserViewModel(ApplicationUser user)
         {
+            Id = user.Id;
             Email = user.Email;
             NumberOfGamesPlayed = user.NumberOfGamesPlayed;
             CurrentPlayerLevel = user.CurrentPlayerLevel;
         }
 
+        [Key]
         [Required]
-        [EmailAddress]
+        public string Id { get; set; }
+
+        [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
 

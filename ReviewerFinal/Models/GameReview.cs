@@ -17,9 +17,10 @@ namespace ReviewerFinal.Models
         [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime DateCreated { get; set; }
 
-
+        [Display(Name = "Review")]
         public string Content { get; set; }
 
+        [Display(Name = "Game")]
         public int RefID { get; set; }
 
         [ForeignKey("RefID")]

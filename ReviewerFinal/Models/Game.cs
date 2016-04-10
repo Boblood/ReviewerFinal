@@ -43,6 +43,7 @@ namespace ReviewerFinal.Models
         }
 
         [Display(Name = "Release Date")]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
         public DateTime ReleaseDate
         {
             get { return _releaseData; }

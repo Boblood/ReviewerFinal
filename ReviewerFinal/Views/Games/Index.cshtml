@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<ReviewerFinal.Models.Game>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Game List";
 }
 
-<h2>Index</h2>
+<h2>Game List</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -29,6 +29,9 @@
         <th>
             @Html.DisplayNameFor(model => model.Description)
         </th>
+        <th>
+            <p>Reviews</p>
+        </th>
         <th></th>
     </tr>
 
@@ -51,6 +54,10 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.ActionLink("View", "ListReviewByGame", "GameReviews", new { gameID = item.GameID}, null) |
+            @Html.ActionLink("Create New", "Create", "GameReviews", new { gameID = item.GameID }, null)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.GameID }) |

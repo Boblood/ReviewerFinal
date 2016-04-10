@@ -52,6 +52,21 @@ namespace ReviewerFinal.Migrations
                     Description = "The first Console Halo",
                     ReasonForGreatness = "OG status and impact on Game community"
                 });
+            context.GameReviews.AddOrUpdate(x => x.ReviewID,
+                new GameReview
+                {
+                    ReviewID = 1,
+                    DateCreated = DateTime.Now,
+                    Content = "Best Game Ever",
+                    GameID = context.Games.First(x => x.GameID == 1)
+                },
+                new GameReview
+                {
+                    ReviewID = 2,
+                    DateCreated = DateTime.Now,
+                    Content = "Best Game Ever Ever",
+                    GameID = context.Games.First(x => x.GameID == 4)
+                });
         }
     }
 }

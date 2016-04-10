@@ -80,6 +80,9 @@ namespace ReviewerFinal.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
+        [Display(Name = "Age")]
+        public int Age { get; set; }
+
         [Display(Name = "Number of Games Played")]
         public int NumberOfGamesPlayed { get; set; }
 
@@ -97,6 +100,7 @@ namespace ReviewerFinal.Models
             Email = user.Email;
             NumberOfGamesPlayed = user.NumberOfGamesPlayed;
             CurrentPlayerLevel = user.CurrentPlayerLevel;
+            Age = user.Age;
         }
 
         [Key]
@@ -106,6 +110,9 @@ namespace ReviewerFinal.Models
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Display(Name = "Age")]
+        public int Age { get; set; }
 
         [Display(Name = "Number of Games Played")]
         public int NumberOfGamesPlayed { get; set; }

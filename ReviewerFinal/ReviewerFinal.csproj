@@ -214,6 +214,14 @@
     <Compile Include="Migrations\201604071737517_AddReviews2.Designer.cs">
       <DependentUpon>201604071737517_AddReviews2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604102144442_finishedUser.cs" />
+    <Compile Include="Migrations\201604102144442_finishedUser.Designer.cs">
+      <DependentUpon>201604102144442_finishedUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201604102205560_datecreatedAdded.cs" />
+    <Compile Include="Migrations\201604102205560_datecreatedAdded.Designer.cs">
+      <DependentUpon>201604102205560_datecreatedAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Game.cs" />
@@ -316,6 +324,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604071737517_AddReviews2.resx">
       <DependentUpon>201604071737517_AddReviews2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604102144442_finishedUser.resx">
+      <DependentUpon>201604102144442_finishedUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604102205560_datecreatedAdded.resx">
+      <DependentUpon>201604102205560_datecreatedAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -13,6 +13,11 @@ namespace ReviewerFinal.Models
         [Key]
         public int ReviewID { get; set; }
 
+        [Display(Name = "Date Created")]
+        [DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
+        public DateTime DateCreated { get; set; }
+
+
         public string Content { get; set; }
 
         public int RefID { get; set; }

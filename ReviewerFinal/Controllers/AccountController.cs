@@ -73,10 +73,10 @@ namespace ReviewerFinal.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Details(string Email = null)
+        public ActionResult Details(string ID = null)
         {
             var db = new ApplicationDbContext();
-            var user = db.Users.First(x => x.Email == Email);
+            var user = db.Users.First(x => x.Id == ID);
             var model = new EditUserViewModel(user);
 
             if (user == null)
@@ -87,16 +87,17 @@ namespace ReviewerFinal.Controllers
             return View(model);
         }
 
-        public ActionResult Edit(string Email = null)
+        [AllowAnonymous]
+        public ActionResult Edit(string ID = null)
         {
-            if (Email == null)
+            if (ID == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             }
 
             var db = new ApplicationDbContext();
-            var user = db.Users.First(x => x.Email == Email);
+            var user = db.Users.First(x => x.Id == ID);
             var model = new EditUserViewModel(user);
 
             if (user == null)
@@ -107,6 +108,7 @@ namespace ReviewerFinal.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id, Email, NumberOfGamesPlayed, CurrentPlayerLevel")] EditUserViewModel userModel)
@@ -128,10 +130,11 @@ namespace ReviewerFinal.Controllers
             return View(userModel);
         }
 
-        public ActionResult Delete(string Email = null)
+        [AllowAnonymous]
+        public ActionResult Delete(string ID = null)
         {
             var db = new ApplicationDbContext();
-            var user = db.Users.First(x => x.Email == Email);
+            var user = db.Users.First(x => x.Id == ID);
             var model = new EditUserViewModel(user);
 
             if (user == null)
@@ -142,12 +145,13 @@ namespace ReviewerFinal.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(string Email)
+        public ActionResult DeleteConfirmed(string ID)
         {
             var db = new ApplicationDbContext();
-            var user = db.Users.First(x => x.Email == Email);
+            var user = db.Users.First(x => x.Id == ID);
             db.Users.Remove(user);
             db.SaveChanges();
             return RedirectToAction("Index");

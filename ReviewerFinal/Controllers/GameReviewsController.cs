@@ -25,8 +25,8 @@ namespace ReviewerFinal.Controllers
         {
             var gameReviews = db.GameReviews.Where(x => x.RefID == gameID).ToList();
 
-            var brewery = db.Games.Find(gameID);
-            ViewBag.GameName = brewery.Name;
+            var game = db.Games.Find(gameID);
+            ViewBag.GameName = game.Name;
 
             return View(gameReviews);
         }

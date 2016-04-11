@@ -5,7 +5,10 @@
 }
 
 <h2>Game List</h2>
-
+@{Html.BeginForm("Search", "Games", FormMethod.Get);}
+<input type="text" name="searchString" value="" />
+<input type="submit" value="Search" />
+@{Html.EndForm();}
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>

@@ -20,6 +20,15 @@ namespace ReviewerFinal.Controllers
             return View(db.Games.ToList());
         }
 
+        public ActionResult Search(string searchString)
+        {
+            var gameList = db.Games
+                .Where(x => x.Name.Contains(searchString))
+                .ToList();
+
+            return View(gameList);
+        }
+
         // GET: Games/Details/5
         public ActionResult Details(int? id)
         {

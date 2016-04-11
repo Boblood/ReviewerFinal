@@ -310,6 +310,7 @@
     <Content Include="Views\GameReviews\Edit.cshtml" />
     <Content Include="Views\GameReviews\Index.cshtml" />
     <Content Include="Views\GameReviews\ListReviewByGame.cshtml" />
+    <Content Include="Views\Games\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

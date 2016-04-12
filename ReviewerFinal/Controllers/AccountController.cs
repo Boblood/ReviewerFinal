@@ -1,18 +1,16 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ReviewerFinal.Models;
+using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
 using System.Data.Entity;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
 namespace ReviewerFinal.Controllers
 {
@@ -93,7 +91,6 @@ namespace ReviewerFinal.Controllers
             if (ID == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
             }
 
             var db = new ApplicationDbContext();
@@ -157,6 +154,155 @@ namespace ReviewerFinal.Controllers
             return RedirectToAction("Index");
         }
 
+        [AllowAnonymous]
+        public ActionResult ViewUsersRoles(string Id = null)
+        {
+            if (!string.IsNullOrWhiteSpace(Id))
+            {
+                List<string> userRoles;
+
+                using (var context = new ApplicationDbContext())
+                {
+                    var roleStore = new RoleStore<IdentityRole>(context);
+                    var roleManager = new RoleManager<IdentityRole>(roleStore);
+
+                    var userStore = new UserStore<ApplicationUser>(context);
+                    var userManager = new UserManager<ApplicationUser>(userStore);
+
+                    var user = userManager.FindById(Id);
+                    if (user == null)
+                        throw new Exception("User not found");
+                    ViewBag.UserName = user.Email;
+                    ViewBag.UserId = user.Id;
+
+                    var userRoleIds = (from r in user.Roles select r.RoleId);
+                    userRoles = (from id in userRoleIds
+                                 let r = roleManager.FindById(id)
+                                 select r.Name).ToList();
+                }
+
+                ViewBag.RolesForUser = userRoles;
+            }
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult AddRoleToUser(string userId = null)
+        {
+            List<string> roles;
+
+            using (var context = new ApplicationDbContext())
+            {
+                var roleStore = new RoleStore<IdentityRole>(context);
+                var roleManager = new RoleManager<IdentityRole>(roleStore);
+
+                roles = (from r in roleManager.Roles select r.Name).ToList();
+                ViewBag.UserName = context.Users.First(x => x.Id == userId).UserName;
+                ViewBag.UserId = userId;
+            }
+
+            ViewBag.roles = new SelectList(roles);
+
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddRoleToUser(string roleName, string userId)
+        {
+            List<string> roles;
+
+            using (var context = new ApplicationDbContext())
+            {
+                var roleStore = new RoleStore<IdentityRole>(context);
+                var roleManager = new RoleManager<IdentityRole>(roleStore);
+
+                var userStore = new UserStore<ApplicationUser>(context);
+                var userManager = new UserManager<ApplicationUser>(userStore);
+
+                var user = userManager.FindById(userId);
+                if (user == null)
+                    throw new Exception("User Not Found");
+                ViewBag.UserName = user.Email;
+
+                var role = roleManager.FindByName(roleName);
+                if (role == null)
+                    throw new Exception("Role Not Found");
+
+                if (userManager.IsInRole(user.Id, role.Name))
+                {
+                    ViewBag.ErrorMessage = "This user already has the role specified";
+
+                    roles = (from r in roleManager.Roles select r.Name).ToList();
+                    ViewBag.Roles = new SelectList(roles);
+
+
+                    return View();
+                }
+                else
+                {
+                    userManager.AddToRole(user.Id, role.Name);
+                    context.SaveChanges();
+
+                    List<string> userRoles;
+                    var userRoleIds = (from r in user.Roles select r.RoleId);
+                    userRoles = (from id in userRoleIds
+                                 let r = roleManager.FindById(id)
+                                 select r.Name).ToList();
+
+                    ViewBag.RolesForUser = userRoles;
+
+                    return View("ViewUsersRoles");
+                }
+            }
+        }
+
+        [AllowAnonymous]
+        public ActionResult DeleteRoleForUser(string userId = null, string roleName = null)
+        {
+            if (!string.IsNullOrWhiteSpace(userId) || !string.IsNullOrWhiteSpace(roleName))
+            {
+                List<string> userRoles;
+
+                using (var context = new ApplicationDbContext())
+                {
+                    var roleStore = new RoleStore<IdentityRole>(context);
+                    var roleManager = new RoleManager<IdentityRole>(roleStore);
+
+                    var userStore = new UserStore<ApplicationUser>(context);
+                    var userManager = new UserManager<ApplicationUser>(userStore);
+
+                    var user = userManager.FindById(userId);
+                    if (user == null)
+                        throw new Exception("User Not Found");
+                    ViewBag.UserName = user.Email;
+
+                    var role = roleManager.FindByName(roleName);
+                    if (role == null)
+                        throw new Exception("Role Not Found");
+
+                    if (userManager.IsInRole(user.Id, role.Name))
+                    {
+                        userManager.RemoveFromRole(user.Id, roleName);
+                        context.SaveChanges();
+                    }
+                    var userRoleIds = (from r in user.Roles select r.RoleId);
+                    userRoles = (from id in userRoleIds
+                                 let r = roleManager.FindById(id)
+                                 select r.Name).ToList();
+
+                }
+                ViewBag.RolesForUser = userRoles;
+
+                return View("ViewUsersRoles");
+            }
+            else
+            {
+                return View("Index");
+            }
+        }
+
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -185,10 +331,13 @@ namespace ReviewerFinal.Controllers
             {
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
+
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
@@ -221,17 +370,19 @@ namespace ReviewerFinal.Controllers
                 return View(model);
             }
 
-            // The following code protects for brute force attacks against the two factor codes. 
-            // If a user enters incorrect codes for a specified amount of time then the user account 
-            // will be locked out for a specified amount of time. 
+            // The following code protects for brute force attacks against the two factor codes.
+            // If a user enters incorrect codes for a specified amount of time then the user account
+            // will be locked out for a specified amount of time.
             // You can configure the account lockout settings in IdentityConfig
             var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
                     return RedirectToLocal(model.ReturnUrl);
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
+
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid code.");
@@ -256,8 +407,13 @@ namespace ReviewerFinal.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email,
-                    NumberOfGamesPlayed = model.NumberOfGamesPlayed, CurrentPlayerLevel = model.CurrentPlayerLevel };
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email,
+                    NumberOfGamesPlayed = model.NumberOfGamesPlayed,
+                    CurrentPlayerLevel = model.CurrentPlayerLevel
+                };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -318,7 +474,7 @@ namespace ReviewerFinal.Controllers
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
                 // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
+                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                 // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
                 // return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
@@ -440,10 +596,13 @@ namespace ReviewerFinal.Controllers
             {
                 case SignInStatus.Success:
                     return RedirectToLocal(returnUrl);
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
+
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+
                 case SignInStatus.Failure:
                 default:
                     // If the user does not have an account, then prompt the user to create an account
@@ -530,6 +689,7 @@ namespace ReviewerFinal.Controllers
         }
 
         #region Helpers
+
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
@@ -586,6 +746,7 @@ namespace ReviewerFinal.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
-        #endregion
+
+        #endregion Helpers
     }
 }

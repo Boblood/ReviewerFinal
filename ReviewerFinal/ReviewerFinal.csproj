@@ -331,6 +331,8 @@
     <Content Include="Views\IdentityRoles\Create.cshtml" />
     <Content Include="Views\IdentityRoles\Edit.cshtml" />
     <Content Include="Views\IdentityRoles\Delete.cshtml" />
+    <Content Include="Views\Account\ViewUsersRoles.cshtml" />
+    <Content Include="Views\Account\AddRoleToUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

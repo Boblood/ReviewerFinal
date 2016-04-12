@@ -16,10 +16,10 @@
     @Html.ValidationSummary(true)
 
     <p>
-        Role Name: @Html.DropDownList("RoleName", ViewBag.Roles as SelectList)
+        Role Name: @Html.DropDownList("RoleName", ViewBag.Roles as SelectList, new { htmlAttributes = new { @class = "form-control" } })
     </p>
 
     @Html.Hidden("userId", ViewBag.UserId as string)
 
-    <input type="submit" value="Save" />
+    <input type="submit" value="Save" class="btn btn-default"/>
 }

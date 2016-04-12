@@ -210,6 +210,7 @@
     <Compile Include="Controllers\GameReviewsController.cs" />
     <Compile Include="Controllers\GamesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IdentityRolesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -325,6 +326,11 @@
     <Content Include="Views\GameReviews\Index.cshtml" />
     <Content Include="Views\GameReviews\ListReviewByGame.cshtml" />
     <Content Include="Views\Games\Search.cshtml" />
+    <Content Include="Views\IdentityRoles\Details.cshtml" />
+    <Content Include="Views\IdentityRoles\Index.cshtml" />
+    <Content Include="Views\IdentityRoles\Create.cshtml" />
+    <Content Include="Views\IdentityRoles\Edit.cshtml" />
+    <Content Include="Views\IdentityRoles\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

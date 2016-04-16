@@ -108,7 +108,7 @@ namespace ReviewerFinal.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id, Email, NumberOfGamesPlayed, CurrentPlayerLevel")] EditUserViewModel userModel)
+        public ActionResult Edit([Bind(Include = "Id, Email, NumberOfGamesPlayed, CurrentPlayerLevel, Password, ConfirmPassword")] EditUserViewModel userModel)
         {
             if (ModelState.IsValid)
             {
@@ -118,6 +118,9 @@ namespace ReviewerFinal.Controllers
                 user.Email = userModel.Email;
                 user.NumberOfGamesPlayed = userModel.NumberOfGamesPlayed;
                 user.CurrentPlayerLevel = userModel.CurrentPlayerLevel;
+
+                var ph = new PasswordHasher();
+                user.PasswordHash = ph.HashPassword(userModel.Password);
 
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
@@ -425,6 +428,8 @@ namespace ReviewerFinal.Controllers
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                    UserManager.AddToRole(user.Id, "User");
 
                     return RedirectToAction("Index", "Home");
                 }

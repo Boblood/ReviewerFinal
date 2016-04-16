@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "Access Denied";
+}
+
+<h2>Sector 6 Restricted Zone</h2>
+<br />
+<h2>Access Denied</h2>
+<p>Warning. No entry without authorization.</p>
+<p>You will be redirected to Sector 6 in 5 seconds or <a href="@Url.Action("Index", "Home")">click here</a> now.</p>
+
+<script>
+    setTimeout(function () {
+        window.location.replace('@Url.Action("Index", "Home")')
+    }, 5000)
+</script>

@@ -48,9 +48,18 @@ namespace ReviewerFinal.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Roles.Add(role);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (db.Roles.Any(x => x.Name == role.Name))
+                {
+                    ViewBag.ErrorMessage = "This user already has the role specified";
+                    return View();
+                }
+                else
+                {
+                    db.Roles.Add(role);
+                    db.SaveChanges();
+                    return RedirectToAction("Index"); 
+
+                }
             }
 
             return View(role);

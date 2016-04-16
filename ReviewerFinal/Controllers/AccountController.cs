@@ -225,6 +225,7 @@ namespace ReviewerFinal.Controllers
                 if (user == null)
                     throw new Exception("User Not Found");
                 ViewBag.UserName = user.Email;
+                ViewBag.UserId = userId;
 
                 var role = roleManager.FindByName(roleName);
                 if (role == null)
@@ -277,6 +278,7 @@ namespace ReviewerFinal.Controllers
                     if (user == null)
                         throw new Exception("User Not Found");
                     ViewBag.UserName = user.Email;
+                    ViewBag.UserId = user.Id;
 
                     var role = roleManager.FindByName(roleName);
                     if (role == null)
@@ -291,7 +293,6 @@ namespace ReviewerFinal.Controllers
                     userRoles = (from id in userRoleIds
                                  let r = roleManager.FindById(id)
                                  select r.Name).ToList();
-
                 }
                 ViewBag.RolesForUser = userRoles;
 

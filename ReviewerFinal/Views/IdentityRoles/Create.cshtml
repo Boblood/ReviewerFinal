@@ -6,6 +6,10 @@
 
 <h2>Create User Role</h2>
 
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-warning">@ViewBag.ErrorMessage</div>
+}
 
 @using (Html.BeginForm())
 {

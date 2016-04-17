@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
+using ReviewerFinal.CustomAttribute;
 using ReviewerFinal.Models;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace ReviewerFinal.Controllers
 {
@@ -15,11 +17,13 @@ namespace ReviewerFinal.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: IdentityRoles
+        [AuthorizeOrRedirect(Roles = "SiteAdmin")]
         public ActionResult Index()
         {
             return View(db.Roles.ToList());
         }
 
+        [AuthorizeOrRedirect(Roles = "SiteAdmin")]
         public ActionResult Details(string id)
         {
             if (id == null)
@@ -37,11 +41,13 @@ namespace ReviewerFinal.Controllers
             return View(role);
         }
 
+        [AuthorizeOrRedirect(Roles = "SiteAdmin")]
         public ActionResult Create()
         {
             return View();
         }
 
+        [AuthorizeOrRedirect(Roles = "SiteAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include ="ID,Name")] IdentityRole role)
@@ -65,6 +71,7 @@ namespace ReviewerFinal.Controllers
             return View(role);
         }
 
+        [AuthorizeOrRedirect(Roles = "SiteAdmin")]
         public ActionResult Edit(string id)
         {
             if (id == null)
@@ -82,6 +89,7 @@ namespace ReviewerFinal.Controllers
             return View(role);
         }
 
+        [AuthorizeOrRedirect(Roles = "SiteAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Name")] IdentityRole role)
@@ -96,6 +104,7 @@ namespace ReviewerFinal.Controllers
             return View(role);
         }
 
+        [AuthorizeOrRedirect(Roles = "SiteAdmin")]
         public ActionResult Delete(string id)
         {
             if (id == null)
@@ -113,6 +122,7 @@ namespace ReviewerFinal.Controllers
             return View(role);
         }
 
+        [AuthorizeOrRedirect(Roles = "SiteAdmin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)

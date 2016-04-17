@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using ReviewerFinal.CustomAttribute;
 using ReviewerFinal.Models;
 using System;
 using System.Collections.Generic;
@@ -54,7 +55,7 @@ namespace ReviewerFinal.Controllers
             }
         }
 
-        [AllowAnonymous]
+        [AuthorizeOrRedirect(Roles = "SiteAdmin")]
         public ActionResult Index()
         {
             var db = new ApplicationDbContext();
@@ -70,7 +71,7 @@ namespace ReviewerFinal.Controllers
             return View(model);
         }
 
-        [AllowAnonymous]
+        [AuthorizeOrRedirect(Roles = "SiteAdmin")]
         public ActionResult Details(string ID = null)
         {
             var db = new ApplicationDbContext();
@@ -85,7 +86,7 @@ namespace ReviewerFinal.Controllers
             return View(model);
         }
 
-        [AllowAnonymous]
+        [AuthorizeOrRedirect(Roles = "SiteAdmin")]
         public ActionResult Edit(string ID = null)
         {
             if (ID == null)
@@ -105,7 +106,7 @@ namespace ReviewerFinal.Controllers
             return View(model);
         }
 
-        [AllowAnonymous]
+        [AuthorizeOrRedirect(Roles = "SiteAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id, Email, NumberOfGamesPlayed, CurrentPlayerLevel, Password, ConfirmPassword")] EditUserViewModel userModel)
@@ -130,7 +131,7 @@ namespace ReviewerFinal.Controllers
             return View(userModel);
         }
 
-        [AllowAnonymous]
+        [AuthorizeOrRedirect(Roles = "SiteAdmin")]
         public ActionResult Delete(string ID = null)
         {
             var db = new ApplicationDbContext();
@@ -145,7 +146,7 @@ namespace ReviewerFinal.Controllers
             return View(model);
         }
 
-        [AllowAnonymous]
+        [AuthorizeOrRedirect(Roles = "SiteAdmin")]
         [ValidateAntiForgeryToken]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(string ID)
@@ -157,7 +158,7 @@ namespace ReviewerFinal.Controllers
             return RedirectToAction("Index");
         }
 
-        [AllowAnonymous]
+        [AuthorizeOrRedirect(Roles = "SiteAdmin")]
         public ActionResult ViewUsersRoles(string Id = null)
         {
             if (!string.IsNullOrWhiteSpace(Id))
@@ -189,7 +190,7 @@ namespace ReviewerFinal.Controllers
             return View();
         }
 
-        [AllowAnonymous]
+        [AuthorizeOrRedirect(Roles = "SiteAdmin")]
         public ActionResult AddRoleToUser(string userId = null)
         {
             List<string> roles;
@@ -209,7 +210,7 @@ namespace ReviewerFinal.Controllers
             return View();
         }
 
-        [AllowAnonymous]
+        [AuthorizeOrRedirect(Roles = "SiteAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddRoleToUser(string roleName, string userId)
@@ -262,7 +263,7 @@ namespace ReviewerFinal.Controllers
             }
         }
 
-        [AllowAnonymous]
+        [AuthorizeOrRedirect(Roles = "SiteAdmin")]
         public ActionResult DeleteRoleForUser(string userId = null, string roleName = null)
         {
             if (!string.IsNullOrWhiteSpace(userId) || !string.IsNullOrWhiteSpace(roleName))

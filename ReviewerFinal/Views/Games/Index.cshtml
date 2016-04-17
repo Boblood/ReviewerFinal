@@ -6,7 +6,7 @@
 
 <h2>Game List</h2>
 @{Html.BeginForm("Search", "Games", FormMethod.Get);}
-<input type="text" name="searchString" value="" class="form-control" style="display: inline-block"/>
+<input type="text" name="searchString" value="" class="form-control" style="display: inline-block" />
 <input type="submit" value="Search" class="btn btn-default" />
 @{Html.EndForm();}
 
@@ -39,36 +39,39 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Publisher)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReleaseDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.GameConsoles)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReasonForGreatness)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.ActionLink("View", "ListReviewByGame", "GameReviews", new { gameID = item.GameID}, null) |
-            @Html.ActionLink("Create New", "Create", "GameReviews", new { gameID = item.GameID }, null)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.GameID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.GameID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.GameID })
-        </td>
-    </tr>
-}
-
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Publisher)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleaseDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GameConsoles)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReasonForGreatness)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.ActionLink("Create New", "Create", "GameReviews", new { gameID = item.GameID }, null) |
+                @Html.ActionLink("View", "ListReviewByGame", "GameReviews", new { gameID = item.GameID }, null) |
+                @Html.ActionLink("Details", "Details", new { id = item.GameID })
+            </td>
+            @if (User.IsInRole("GameAdmin"))
+                {
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.GameID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.GameID })
+                </td>
+            }
+        </tr>
+    }
 </table>

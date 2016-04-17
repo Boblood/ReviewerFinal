@@ -3,8 +3,13 @@
 }
 
 <h2>Admin</h2>
-
+@if (User.IsInRole("GameAdmin"))
+{
 @Html.ActionLink("Games", "Index", "Games") <br />
 @Html.ActionLink("Reviews", "Index", "GameReviews")<br />
+}
+@if (User.IsInRole("SiteAdmin"))
+{
 @Html.ActionLink("Users", "Index", "Account")<br />
 @Html.ActionLink("Roles", "Index", "IdentityRoles")<br />
+}

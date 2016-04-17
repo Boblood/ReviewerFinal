@@ -6,8 +6,8 @@
 
 <h2>Game List</h2>
 @{Html.BeginForm("Search", "Games", FormMethod.Get);}
-<input type="text" name="searchString" value="" class="form-control"/> 
-<input type="submit" value="Search" class="btn btn-default"/>
+<input type="text" name="searchString" value="" class="form-control" />
+<input type="submit" value="Search" class="btn btn-default" />
 @{Html.EndForm();}
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -60,16 +60,18 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
+                @Html.ActionLink("Create New", "Create", "GameReviews", new { gameID = item.GameID }, null) |
                 @Html.ActionLink("View", "ListReviewByGame", "GameReviews", new { gameID = item.GameID }, null) |
-                @Html.ActionLink("Create New", "Create", "GameReviews", new { gameID = item.GameID }, null)
+                @Html.ActionLink("Details", "Details", new { id = item.GameID })
             </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.GameID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.GameID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.GameID })
-            </td>
+            @if (User.IsInRole("GameAdmin"))
+                {
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.GameID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.GameID })
+                </td>
+            }
         </tr>
     }
-
 </table>
 @Html.ActionLink("Back To List", "Index")

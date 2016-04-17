@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ReviewerFinal.Models;
+using ReviewerFinal.CustomAttribute;
 
 namespace ReviewerFinal.Controllers
 {
@@ -15,12 +16,14 @@ namespace ReviewerFinal.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: GameReviews
+        [AllowAnonymous]
         public ActionResult Index()
         {
             var gameReviews = db.GameReviews.Include(g => g.GameID);
             return View(gameReviews.ToList());
         }
 
+        [AllowAnonymous]
         public ActionResult ListReviewByGame(int gameID)
         {
             var gameReviews = db.GameReviews.Where(x => x.RefID == gameID).ToList();
@@ -32,6 +35,7 @@ namespace ReviewerFinal.Controllers
         }
 
         // GET: GameReviews/Details/5
+        [AllowAnonymous]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -47,6 +51,7 @@ namespace ReviewerFinal.Controllers
         }
 
         // GET: GameReviews/Create
+        [AuthorizeOrRedirect(Roles = "User")]
         public ActionResult Create()
         {
             ViewBag.RefID = new SelectList(db.Games, "GameID", "Name");
@@ -56,6 +61,7 @@ namespace ReviewerFinal.Controllers
         // POST: GameReviews/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [AuthorizeOrRedirect(Roles = "User")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ReviewID,DateCreated,Content,RefID")] GameReview gameReview)
@@ -73,6 +79,7 @@ namespace ReviewerFinal.Controllers
         }
 
         // GET: GameReviews/Edit/5
+        [AuthorizeOrRedirect(Roles = "GameAdmin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -91,6 +98,7 @@ namespace ReviewerFinal.Controllers
         // POST: GameReviews/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [AuthorizeOrRedirect(Roles = "GameAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ReviewID,DateCreated,Content,RefID")] GameReview gameReview)
@@ -106,6 +114,7 @@ namespace ReviewerFinal.Controllers
         }
 
         // GET: GameReviews/Delete/5
+        [AuthorizeOrRedirect(Roles = "GameAdmin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -121,6 +130,7 @@ namespace ReviewerFinal.Controllers
         }
 
         // POST: GameReviews/Delete/5
+        [AuthorizeOrRedirect(Roles = "GameAdmin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

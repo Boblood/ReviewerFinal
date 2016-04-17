@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ReviewerFinal.Models;
+using ReviewerFinal.CustomAttribute;
 
 namespace ReviewerFinal.Controllers
 {
@@ -15,11 +16,13 @@ namespace ReviewerFinal.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Games
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View(db.Games.ToList());
         }
 
+        [AllowAnonymous]
         public ActionResult Search(string searchString)
         {
             var gameList = db.Games
@@ -30,6 +33,7 @@ namespace ReviewerFinal.Controllers
         }
 
         // GET: Games/Details/5
+        [AllowAnonymous]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -45,6 +49,7 @@ namespace ReviewerFinal.Controllers
         }
 
         // GET: Games/Create
+        [AuthorizeOrRedirect(Roles = "GameAdmin")]
         public ActionResult Create()
         {
             return View();
@@ -53,6 +58,7 @@ namespace ReviewerFinal.Controllers
         // POST: Games/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [AuthorizeOrRedirect(Roles = "GameAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "GameID,Name,Publisher,ReleaseDate,GameConsoles,ReasonForGreatness,Description")] Game game)
@@ -68,6 +74,7 @@ namespace ReviewerFinal.Controllers
         }
 
         // GET: Games/Edit/5
+        [AuthorizeOrRedirect(Roles = "GameAdmin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -87,6 +94,7 @@ namespace ReviewerFinal.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AuthorizeOrRedirect(Roles = "GameAdmin")]
         public ActionResult Edit([Bind(Include = "GameID,Name,Publisher,ReleaseDate,GameConsoles,ReasonForGreatness,Description")] Game game)
         {
             if (ModelState.IsValid)
@@ -99,6 +107,7 @@ namespace ReviewerFinal.Controllers
         }
 
         // GET: Games/Delete/5
+        [AuthorizeOrRedirect(Roles = "GameAdmin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -114,6 +123,7 @@ namespace ReviewerFinal.Controllers
         }
 
         // POST: Games/Delete/5
+        [AuthorizeOrRedirect(Roles = "GameAdmin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

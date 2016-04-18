@@ -2,6 +2,12 @@
 
 @{
     ViewBag.Title = "Game List";
+    List<ReviewerFinal.Models.GameSystem> horizBoxArt = new List<ReviewerFinal.Models.GameSystem>()
+    {
+        ReviewerFinal.Models.GameSystem.SecondGen,
+        ReviewerFinal.Models.GameSystem.SNES,
+        ReviewerFinal.Models.GameSystem.Nintendo64
+    };
 }
 
 <h2>Game List</h2>
@@ -16,6 +22,8 @@
 <table class="table">
     <tr>
         <th>
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
@@ -28,12 +36,6 @@
             @Html.DisplayNameFor(model => model.GameConsoles)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ReasonForGreatness)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
             <p>Reviews</p>
         </th>
         <th></th>
@@ -42,6 +44,9 @@
     @foreach (var item in Model)
     {
         <tr>
+            <td>
+                <img src="@item.GameImage" class="GameImage" @{ int height = 150; int width = 100;  if (horizBoxArt.Contains(item.GameConsoles)) { height = 100; width = 150; } } height=@height width=@width />
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -55,12 +60,6 @@
                 @Html.DisplayFor(modelItem => item.GameConsoles)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ReasonForGreatness)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
                 @Html.ActionLink("Create New", "Create", "GameReviews", new { gameID = item.GameID }, null) |
                 @Html.ActionLink("View", "ListReviewByGame", "GameReviews", new { gameID = item.GameID }, null) |
                 @Html.ActionLink("Details", "Details", new { id = item.GameID })
@@ -71,7 +70,7 @@
                     @Html.ActionLink("Edit", "Edit", new { id = item.GameID }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.GameID })
                 </td>
-            }
+                }
         </tr>
     }
 </table>

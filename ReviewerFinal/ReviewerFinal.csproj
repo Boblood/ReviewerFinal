@@ -237,6 +237,10 @@
     <Compile Include="Migrations\201604102205560_datecreatedAdded.Designer.cs">
       <DependentUpon>201604102205560_datecreatedAdded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201604172314399_images.cs" />
+    <Compile Include="Migrations\201604172314399_images.Designer.cs">
+      <DependentUpon>201604172314399_images.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Game.cs" />
@@ -363,6 +367,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201604102205560_datecreatedAdded.resx">
       <DependentUpon>201604102205560_datecreatedAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201604172314399_images.resx">
+      <DependentUpon>201604172314399_images.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

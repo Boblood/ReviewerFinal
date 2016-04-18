@@ -61,7 +61,7 @@ namespace ReviewerFinal.Controllers
         [AuthorizeOrRedirect(Roles = "GameAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "GameID,Name,Publisher,ReleaseDate,GameConsoles,ReasonForGreatness,Description")] Game game)
+        public ActionResult Create([Bind(Include = "GameID,Name,Publisher,ReleaseDate,GameConsoles,ReasonForGreatness,Description,GameImage")] Game game)
         {
             if (ModelState.IsValid)
             {
@@ -95,7 +95,7 @@ namespace ReviewerFinal.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AuthorizeOrRedirect(Roles = "GameAdmin")]
-        public ActionResult Edit([Bind(Include = "GameID,Name,Publisher,ReleaseDate,GameConsoles,ReasonForGreatness,Description")] Game game)
+        public ActionResult Edit([Bind(Include = "GameID,Name,Publisher,ReleaseDate,GameConsoles,ReasonForGreatness,Description,GameImage")] Game game)
         {
             if (ModelState.IsValid)
             {

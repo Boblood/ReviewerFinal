@@ -2,18 +2,27 @@
 
 @{
     ViewBag.Title = "Game List";
+    List<ReviewerFinal.Models.GameSystem> horizBoxArt = new List<ReviewerFinal.Models.GameSystem>()
+    {
+        ReviewerFinal.Models.GameSystem.SecondGen,
+        ReviewerFinal.Models.GameSystem.SNES,
+        ReviewerFinal.Models.GameSystem.Nintendo64
+    };
 }
 
 <h2>Game List</h2>
 @{Html.BeginForm("Search", "Games", FormMethod.Get);}
-<input type="text" name="searchString" value="" class="form-control" />
+<input type="text" name="searchString" value="" class="form-control" style="display: inline-block" />
 <input type="submit" value="Search" class="btn btn-default" />
 @{Html.EndForm();}
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
+        <th>
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
@@ -27,12 +36,6 @@
             @Html.DisplayNameFor(model => model.GameConsoles)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ReasonForGreatness)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
             <p>Reviews</p>
         </th>
         <th></th>
@@ -41,6 +44,9 @@
     @foreach (var item in Model)
     {
         <tr>
+            <td>
+                <img src="@item.GameImage" class="GameImage" @{ int height = 150; int width = 100; if (horizBoxArt.Contains(item.GameConsoles)) { height = 100; width = 150; } } height=@height width=@width />
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -52,12 +58,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.GameConsoles)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReasonForGreatness)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
                 @Html.ActionLink("Create New", "Create", "GameReviews", new { gameID = item.GameID }, null) |

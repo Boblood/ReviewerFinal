@@ -65,9 +65,21 @@ namespace ReviewerFinal.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Games.Add(game);
-                db.SaveChanges();
+                try
+                {
+                    db.Games.Add(game);
+                    db.SaveChanges();
+                }
+                catch(Exception e)
+                {
+                    game.ReleaseDate = new DateTime(1754, 1, 1);
+                    db.Games.Add(game);
+                    db.SaveChanges();
+                }
+
                 return RedirectToAction("Index");
+
+                
             }
 
             return View(game);

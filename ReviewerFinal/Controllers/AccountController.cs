@@ -109,7 +109,7 @@ namespace ReviewerFinal.Controllers
         [AuthorizeOrRedirect(Roles = "SiteAdmin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id, Email, NumberOfGamesPlayed, CurrentPlayerLevel, Password, ConfirmPassword")] EditUserViewModel userModel)
+        public ActionResult Edit([Bind(Include = "Id, Email, NumberOfGamesPlayed, CurrentPlayerLevel, Age")] EditUserViewModel userModel)
         {
             if (ModelState.IsValid)
             {
@@ -119,9 +119,7 @@ namespace ReviewerFinal.Controllers
                 user.Email = userModel.Email;
                 user.NumberOfGamesPlayed = userModel.NumberOfGamesPlayed;
                 user.CurrentPlayerLevel = userModel.CurrentPlayerLevel;
-
-                var ph = new PasswordHasher();
-                user.PasswordHash = ph.HashPassword(userModel.Password);
+                user.Age = userModel.Age;
 
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
@@ -308,6 +306,48 @@ namespace ReviewerFinal.Controllers
             }
         }
 
+        [AuthorizeOrRedirect(Roles = "SiteAdmin")]
+        public ActionResult ChangePassword(string ID = null)
+        {
+            if (ID == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var db = new ApplicationDbContext();
+            var user = db.Users.First(x => x.Id == ID);
+            var model = new ChangeUserPasswordViewModel(user);
+            ViewBag.Email = user.Email;
+
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(model);
+        }
+
+        [AuthorizeOrRedirect(Roles = "SiteAdmin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword([Bind(Include = "Id, Password, ConfirmPassword")] ChangeUserPasswordViewModel userModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var db = new ApplicationDbContext();
+                var user = db.Users.First(x => x.Id == userModel.Id);
+
+                var ph = new PasswordHasher();
+                user.PasswordHash = ph.HashPassword(userModel.Password);
+
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(userModel);
+        }
+
         //
         // GET: /Account/Login
         [AllowAnonymous]
@@ -417,7 +457,8 @@ namespace ReviewerFinal.Controllers
                     UserName = model.Email,
                     Email = model.Email,
                     NumberOfGamesPlayed = model.NumberOfGamesPlayed,
-                    CurrentPlayerLevel = model.CurrentPlayerLevel
+                    CurrentPlayerLevel = model.CurrentPlayerLevel,
+                    Age = model.Age
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

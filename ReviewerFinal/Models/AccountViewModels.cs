@@ -119,6 +119,20 @@ namespace ReviewerFinal.Models
 
         [Display(Name = "Gamer Level")]
         public PlayerLevel CurrentPlayerLevel { get; set; }
+    }
+
+    public class ChangeUserPasswordViewModel
+    {
+        public ChangeUserPasswordViewModel() { }
+
+        public ChangeUserPasswordViewModel(ApplicationUser user)
+        {
+            Id = user.Id;
+        }
+
+        [Key]
+        [Required]
+        public string Id { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]

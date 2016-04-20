@@ -66,6 +66,7 @@ namespace ReviewerFinal.Models
             set { _desc = value; }
         }
 
+        [Display(Name = "Box Art")]
         public string GameImage { get; set; }
 
         public ICollection<GameReview> Reviews { get; set; }

@@ -30,6 +30,7 @@ namespace ReviewerFinal.Controllers
 
             var game = db.Games.Find(gameID);
             ViewBag.GameName = game.Name;
+            ViewBag.GameID = game.GameID;
 
             return View(gameReviews);
         }
@@ -52,9 +53,9 @@ namespace ReviewerFinal.Controllers
 
         // GET: GameReviews/Create
         [AuthorizeOrRedirect(Roles = "User")]
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
-            ViewBag.RefID = new SelectList(db.Games, "GameID", "Name");
+            ViewBag.RefID = new SelectList(db.Games, "GameID", "Name", id);
             return View();
         }
 
